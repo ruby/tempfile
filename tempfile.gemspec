@@ -1,8 +1,8 @@
 Gem::Specification.new do |spec|
   spec.name          = "tempfile"
   spec.version       = "0.1.0"
-  spec.authors       = ["Hiroshi SHIBATA"]
-  spec.email         = ["hsbt@ruby-lang.org"]
+  spec.authors = ["Yukihiro Matsumoto"]
+  spec.email = ["matz@ruby-lang.org"]
 
   spec.summary       = %q{A utility class for managing temporary files.}
   spec.description   = %q{A utility class for managing temporary files.}
