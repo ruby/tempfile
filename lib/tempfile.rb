@@ -89,7 +89,7 @@ require 'tmpdir'
 class Tempfile < DelegateClass(File)
 
   # Creates a file in the underlying file system;
-  # returns a new \Tempfile object base on that file.
+  # returns a new \Tempfile object based on that file.
   #
   # If possible, consider instead using Tempfile.create, which:
   #
@@ -340,7 +340,7 @@ class Tempfile < DelegateClass(File)
 end
 
 # Creates a file in the underlying file system;
-# returns a new \File object base on that file.
+# returns a new \File object based on that file.
 #
 # With no block given and no arguments, creates and returns file whose:
 #
