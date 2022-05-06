@@ -107,8 +107,8 @@ class Tempfile < DelegateClass(File)
   #   see {File Permissions}[https://docs.ruby-lang.org/en/master/File.html#label-File+Permissions].
   # - Mode is <tt>'w+'</tt> (read/write mode, positioned at the end).
   #
-  # The file is not removed automatically,
-  # and so should be explicitly removed.
+  # The underlying file is removed when the \Tempfile object dies
+  # and is reclaimed by the garbage collector.
   #
   # Example:
   #
