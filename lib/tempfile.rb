@@ -264,6 +264,7 @@ class Tempfile < DelegateClass(File)
       "#<#{self.class}:#{path}>"
     end
   end
+  alias to_s inspect
 
   class Remover # :nodoc:
     def initialize(tmpfile)
