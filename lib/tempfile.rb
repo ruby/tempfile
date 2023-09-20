@@ -147,14 +147,14 @@ class Tempfile < DelegateClass(File)
   #
   # Related: Tempfile.create.
   #
-  def initialize(basename="", tmpdir=nil, mode: 0, **options)
+  def initialize(basename="", tmpdir=nil, mode: 0, perm: 0600, **options)
     warn "Tempfile.new doesn't call the given block.", uplevel: 1 if block_given?
 
     @unlinked = false
     @mode = mode|File::RDWR|File::CREAT|File::EXCL
     ::Dir::Tmpname.create(basename, tmpdir, **options) do |tmpname, n, opts|
-      opts[:perm] = 0600
-      @tmpfile = File.open(tmpname, @mode, **opts)
+      @tmpfile = File.open(tmpname, @mode, perm, **opts)
+      @perm = perm
       @opts = opts.freeze
     end
     ObjectSpace.define_finalizer(self, Remover.new(@tmpfile))
@@ -397,12 +397,11 @@ end
 #
 # Related: Tempfile.new.
 #
-def Tempfile.create(basename="", tmpdir=nil, mode: 0, **options)
+def Tempfile.create(basename="", tmpdir=nil, mode: 0, perm: 0600, **options)
   tmpfile = nil
   Dir::Tmpname.create(basename, tmpdir, **options) do |tmpname, n, opts|
     mode |= File::RDWR|File::CREAT|File::EXCL
-    opts[:perm] = 0600
-    tmpfile = File.open(tmpname, mode, **opts)
+    tmpfile = File.open(tmpname, mode, perm, **opts)
   end
   if block_given?
     begin
