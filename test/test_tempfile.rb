@@ -283,6 +283,16 @@ puts Tempfile.new('foo').path
     end
   end
 
+  def test_new_with_no_permissions
+    t = tempfile("foo", perm: 0)
+    assert_equal 0, t.stat.mode & 0777
+  end
+
+  def test_new_with_default_permissions
+    t = tempfile("foo")
+    assert_equal 0600, t.stat.mode & 0777
+  end
+
   module M
   end
 
@@ -390,6 +400,18 @@ puts Tempfile.new('foo').path
         File.unlink(t.path)
       end
     end
+  end
+
+  def test_create_with_no_permissions
+    perm = nil
+    Tempfile.create("foo", perm: 0) { perm = _1.stat.mode & 0777 }
+    assert_equal 0, perm
+  end
+
+  def test_create_with_default_permissions
+    perm = nil
+    Tempfile.create("foo") { perm = _1.stat.mode & 0777 }
+    assert_equal 0600, perm
   end
 
   def assert_mktmpdir_traversal
