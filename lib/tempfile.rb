@@ -175,8 +175,6 @@ class Tempfile < DelegateClass(File)
     ObjectSpace.define_finalizer(self, Closer.new(__getobj__))
   end
 
-  protected attr_reader :unlinked, :mode, :opts, :finalizer_obj
-
   private def initialize_copy_iv(other)
     @unlinked = other.unlinked
     @mode = other.mode
@@ -287,6 +285,10 @@ class Tempfile < DelegateClass(File)
       "#<#{self.class}:#{path}>"
     end
   end
+
+  protected
+
+  attr_reader :unlinked, :mode, :opts, :finalizer_obj
 
   class Closer # :nodoc:
     def initialize(tmpfile)
