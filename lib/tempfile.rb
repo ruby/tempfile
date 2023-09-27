@@ -175,11 +175,13 @@ class Tempfile < DelegateClass(File)
     ObjectSpace.define_finalizer(self, Closer.new(__getobj__))
   end
 
+  protected attr_reader :unlinked, :mode, :opts, :finalizer_obj
+
   private def initialize_copy_iv(other)
-    @unlinked = other.instance_variable_get(:@unlinked)
-    @mode = other.instance_variable_get(:@mode)
-    @opts = other.instance_variable_get(:@opts)
-    @finalizer_obj = other.instance_variable_get(:@finalizer_obj)
+    @unlinked = other.unlinked
+    @mode = other.mode
+    @opts = other.opts
+    @finalizer_obj = other.finalizer_obj
   end
 
   # Opens or reopens the file with mode "r+".
@@ -288,12 +290,10 @@ class Tempfile < DelegateClass(File)
 
   class Closer # :nodoc:
     def initialize(tmpfile)
-      @pid = Process.pid
       @tmpfile = tmpfile
     end
 
     def call(*args)
-      return if @pid != Process.pid
       @tmpfile.close
     end
   end
