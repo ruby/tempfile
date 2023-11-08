@@ -306,7 +306,7 @@ class Tempfile < DelegateClass(File)
   class Remover # :nodoc:
     def initialize(path)
       @pid = Process.pid
-      @path = path 
+      @path = path
     end
 
     def call(*args)
