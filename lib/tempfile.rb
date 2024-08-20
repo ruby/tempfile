@@ -242,18 +242,20 @@ class Tempfile < DelegateClass(File)
   def initialize_dup(other) # :nodoc:
     initialize_copy_iv(other)
     super(other)
+    ObjectSpace.define_finalizer(@finalizer_obj, Closer.new(__getobj__))
   end
 
   def initialize_clone(other) # :nodoc:
     initialize_copy_iv(other)
     super(other)
+    ObjectSpace.define_finalizer(@finalizer_obj, Closer.new(__getobj__))
   end
 
   private def initialize_copy_iv(other) # :nodoc:
     @unlinked = other.unlinked
     @mode = other.mode
     @opts = other.opts
-    @finalizer_obj = other.finalizer_obj
+    @finalizer_obj = Object.new
   end
 
   # Opens or reopens the file with mode "r+".
